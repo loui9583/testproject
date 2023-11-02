@@ -15,7 +15,7 @@ jobs:
 
     - name: Set up SSH connection with password
       run: |
-        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no root@${{ secrets.VM_IP }} 'cd ${{ secrets.REPO_PATH }} && git pull && mvn clean install && systemctl restart ${{ secrets.APP_SERVICE_NAME }}'
+        sshpass -p "${{ secrets.SSH_PASSPHRASE }}" ssh -o StrictHostKeyChecking=no root@${{ secrets.VM_IP }} 'cd ${{ secrets.REPO_PATH }} && git pull && mvn clean install && systemctl restart ${{ secrets.APP_SERVICE_NAME }}'
       env:
         SSHPASS: ${{ secrets.SSH_PASSPHRASE }}
 
