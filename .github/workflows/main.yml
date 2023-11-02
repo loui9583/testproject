@@ -1,0 +1,23 @@
+name: CI/CD for Java Spring Boot
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH connection
+      uses: webfactory/ssh-agent@v0.5
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to Ubuntu VM
+      run: |
+        ssh -o StrictHostKeyChecking=no root@${{ secrets.VM_IP }} 'cd ${{ secrets.REPO_PATH }} && git pull && mvn clean install && systemctl restart ${{ secrets.APP_SERVICE_NAME }}'
