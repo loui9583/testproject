@@ -14,7 +14,7 @@ public class TestApi {
     }
     @GetMapping("spaghetti")
     String spaghetti(){
-        return "spaghetti";
+        return "Updated with CI/CD!";
     }
 
 }
