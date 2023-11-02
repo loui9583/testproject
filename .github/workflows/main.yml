@@ -13,11 +13,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up SSH connection
+    - name: Set up SSH connection with passphrase
       uses: webfactory/ssh-agent@v0.7.0
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        ssh-private-key-passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        log-public-key: true
 
     - name: Deploy to Ubuntu VM
       run: |
