@@ -13,12 +13,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up SSH connection with passphrase
-      uses: webfactory/ssh-agent@v0.7.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        log-public-key: true
-
-    - name: Deploy to Ubuntu VM
+    - name: Set up SSH connection with password
       run: |
-        ssh -o StrictHostKeyChecking=no root@${{ secrets.VM_IP }} 'cd ${{ secrets.REPO_PATH }} && git pull && mvn clean install && systemctl restart ${{ secrets.APP_SERVICE_NAME }}'
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no root@${{ secrets.VM_IP }} 'cd ${{ secrets.REPO_PATH }} && git pull && mvn clean install && systemctl restart ${{ secrets.APP_SERVICE_NAME }}'
+      env:
+        SSHPASS: ${{ secrets.SSH_PASSPHRASE }}
+
+    - name: Install sshpass
+      run: sudo apt-get install -y sshpass
+
