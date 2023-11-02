@@ -12,5 +12,9 @@ public class TestApi {
     String test (){
         return "test";
     }
+    @GetMapping("spaghetti")
+    String spaghetti(){
+        return "spaghetti";
+    }
 
 }
