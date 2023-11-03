@@ -22,4 +22,13 @@ public class TestApi {
     String pizza(){
         return "PIZZA!";
     }
+
+
+    @GetMapping("newtest")
+    String newtest(){
+        return "newtest!";
+    }
+
+
+
 }
