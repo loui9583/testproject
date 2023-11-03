@@ -13,12 +13,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up SSH connection with password
+    - name: Set up SSH connection with private key
       run: |
-        sshpass -p "${{ secrets.SSH_PASSPHRASE }}" ssh -o StrictHostKeyChecking=no root@${{ secrets.VM_IP }} 'cd ${{ secrets.REPO_PATH }} && git pull && mvn clean install && systemctl restart ${{ secrets.APP_SERVICE_NAME }}'
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        eval $(ssh-agent -s)
+        ssh-add ~/.ssh/id_rsa
+        ssh -o StrictHostKeyChecking=no root@${{ secrets.VM_IP }} 'cd ${{ secrets.REPO_PATH }} && git pull && mvn clean install && systemctl restart ${{ secrets.APP_SERVICE_NAME }}'
       env:
-        SSHPASS: ${{ secrets.SSH_PASSPHRASE }}
-
-    - name: Install sshpass
-      run: sudo apt-get install -y sshpass
-
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
