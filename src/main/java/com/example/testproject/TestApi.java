@@ -29,6 +29,8 @@ public class TestApi {
         return "newtest!";
     }
 
+    @GetMapping("wow")
+    String wow(){return "WOW!";}
 
 
 }
